@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="sidebar">
+                    <h5>Profile</h5>
+                    <img src="uploads/<?php echo $user['profile_pic']; ?>" alt="Profile Picture" class="rounded-circle"
+                        width="100" height="100">
+                    <p><strong>
+                            <?php echo $user['username']; ?>
+                        </strong></p>
+                    <p>
+                        <?php echo $user['bio']; ?>
+                    </p>
+                    <a href="edit_profile.php" class="btn btn-primary btn-block">Edit Profile</a>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="tweet-input mb-4">
+
+                    <form action="/twitter_clone/post_tweet.php" method="post" enctype="multipart/form-data">
+                        <textarea class="form-control" rows="3" name="content"
+                            placeholder="What's happening?"></textarea>
+                        <input type="file" name="media" class="form-control mt-2">
+                        <button type="submit" class="btn btn-primary btn-block mt-2">Tweet</button>
+                    </form>
+
+                </div>
+
+                <div class="tweet-feed">
+                    <?php while($tweet = $tweets->fetch_assoc()): ?>
+                    <div class="tweet mb-3">
+                        <div class="d-flex">
+                            <img src="uploads/<?php echo $user['profile_pic']; ?>" alt="Profile Picture"
+                                class="rounded-circle" width="50" height="50">
+                            <div class="ml-3">
+                                <p><strong>
+                                        <?php echo $user['username']; ?>
+                                    </strong> <span class="text-muted">@
+                                        <?php echo $user['username']; ?>
+                                    </span></p>
+                                <p>
+                                    <?php echo $tweet['content']; ?>
+                                </p>
+                                <?php if ($tweet['media']): ?>
+                                <?php if (strpos($tweet['media'], 'mp4') !== false): ?>
+                                <video width="100%" controls>
+                                    <source src="uploads/<?php echo $tweet['media']; ?>" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <?php else: ?>
+                                <img src="uploads/<?php echo $tweet['media']; ?>" alt="Tweet Media" width="100%">
+                                <?php endif; ?>
+                                <?php endif; ?>
+
+                            </div>
+                        </div>
+                    </div>
+                    <?php endwhile; ?>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
